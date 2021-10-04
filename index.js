@@ -71,6 +71,54 @@ app.delete('/devices/:id', (req, res) => {
         })
     })
 })
+
+//read categories
+app.get('/categories', (req, res) => {
+    const query = "select * from categories";
+    database.query(query, (error, result)=>{
+        if(error){
+            console.log(error);
+        }
+        if(result.length>0){
+            res.send({
+                message: "all categories",
+                data: result
+            })
+        }
+    });
+})
+//create category
+app.post('/categories', (req, res) => {
+    console.log(req.body);
+
+    let name = req.body.name;
+
+    const query = `insert into categories(name) values('${name}')`;
+
+    database.query(query, (error, result) => {
+        if(error){
+            console.log(error);
+        }
+        res.send({
+            message: "category created",
+        })
+    })
+})
+//delete category
+app.delete('/categories/:id', (req, res) => {
+    let Id = req.params.id;
+
+    const query = `delete from categories where id = '${Id}'`
+
+    database.query(query, (error, result) => {
+        if(error){
+            console.log(error);
+        }
+        res.send({
+            message: "category deleted"
+        })
+    })
+})
 app.listen(3000, ()=>{
     console.log("server running");
 })
